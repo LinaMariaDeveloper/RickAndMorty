@@ -261,3 +261,8 @@
   margin-top:10px;
 }
 
+.filtro {
+  margin: 10px;
+  font-size: 25px;
+  box-shadow: 0px 0px 10px #00E5FF;
+}

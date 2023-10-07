@@ -10,8 +10,6 @@ import Error from './components/Error';
 import Form from './components/Form'
 import Favorites from './components/Favorites'
 import style from './style.module.css'
-import { useDispatch } from "react-redux";
-import { removeFavorite } from './redux/actions';
 
 function App() {
    const [characters, setCharacters] = useState([]);
@@ -96,12 +94,9 @@ function App() {
       // });
    }
 
-   const dispatch = useDispatch();
-
    function onClose(id) {
       const updatedCharacters = characters.filter((character) => character.id !== parseInt(id))
       setCharacters(updatedCharacters)
-      dispatch(removeFavorite(id));
    }
 
    function randomCharacter() {
@@ -123,7 +118,7 @@ function App() {
             <Route path="/" element={<Form login={login}/>}/>
             <Route path='/home' element={<Cards characters={characters} onClose={onClose}/>}/>
             <Route path='/about' element={<About/>} />
-            <Route path='/favorites' element={<Favorites onClose={onClose}/>}/>
+            <Route path='/favorites' element={<Favorites/>}/>
             <Route path='/detail/:id' element={<Detail/>} />
             <Route path="*" element={<Error />} />
          </Routes>

@@ -1,13 +1,12 @@
 import { ADD_FAVORITE, FIlTER_FAVORITE, ORDER_CARDS, REMOVE_FAVORITE} from "./actions-type";
 
-let initialState = { myFavorites: [], allCharacter: [], filtered: []};
+let initialState = { myFavorites: [], allCharacter: []};
 
 export default function rootReducer(state = initialState, action) {
   switch (action.type) {
     case ADD_FAVORITE:
       return {
         ...state,
-        myFavorites: [...state.myFavorites, action.payload],
         allCharacter: [...state.allCharacter, action.payload],
       };
     case REMOVE_FAVORITE:
@@ -18,8 +17,8 @@ export default function rootReducer(state = initialState, action) {
     case FIlTER_FAVORITE:
       return {
         ...state,
-        filtered: state.allCharacters.filter(
-          (element) => element.gender === action.payload
+        myFavorites: state.allCharacter.filter(
+          (element) => element.gender === action.payload || action.payload === 'All'
         ),
       };
     case ORDER_CARDS:

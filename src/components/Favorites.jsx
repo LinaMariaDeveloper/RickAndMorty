@@ -4,13 +4,14 @@ import { useDispatch, useSelector} from "react-redux";
 import { removeFavorite } from "../redux/actions";
 import { filterFavorite, orderCards } from "../redux/actions";
 import { useState } from "react";
+import style from '../style.module.css'
 
-const Favorites = ({onClose}) => {
+const Favorites = () => {
 
   const favorites = useSelector(state => state.myFavorites)
   const dispatch = useDispatch()
-  const filtered = useSelector((state) => state.filtered);
-  const [auxFiltros, setAuxFiltros] = useState(false);
+  const [aux, setAux] = useState(false);
+
   
   function handleOrder(event) {
     if (aux) {
@@ -22,15 +23,8 @@ const Favorites = ({onClose}) => {
   }
 
   function handleFilter(event) {
-    if (event.target.value !== "AllGender") {
-      setAuxFiltros(true);
-    } else {
-      setAuxFiltros(false);
-    }
     dispatch(filterFavorite(event.target.value));
   }
-
-  const [aux, setAux] = useState(false);
 
   const favs = favorites.map((character) => <Card
     key={character.id}
@@ -46,24 +40,17 @@ const Favorites = ({onClose}) => {
 
   return (
     <div>
-      <select onChange={handleOrder}>
+      <select className={style['filtro']} onChange={handleOrder}>
         <option value="A">Ascendant</option>
         <option value="D">Descendent</option>
       </select>
-      <select onChange={handleFilter}>
+      <select className={style['filtro']} onChange={handleFilter}>
         <option value="All">All genders</option>
         <option value="Male">Male</option>
         <option value="Female">Female</option>
         <option value="Genderless">Genderless</option>
         <option value="unknown">Unknown</option>
       </select>
-      {auxFiltros
-        ? filtered.map((element) => (
-            <Card key={element.id} props={element} onClose={onClose} />
-          ))
-        : favorites.map((element) => (
-            <Card key={element.id} props={element} onClose={onClose} />
-          ))}
       <div>{favs}</div>
     </div>
   );
