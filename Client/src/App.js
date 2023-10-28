@@ -44,28 +44,49 @@ function App() {
    //    }
    //    setCharacters([...characters, person])
    // }
-   async function login(userData){
-      if (userData.password === PASSWORD && userData.email === EMAIL) {
-         setAccess(true);
-         navigate('/home');
-      }
+
+   // FORMA DE LOGIN ANTES DE BACKEND - ANTES DE APLICAR EXPRESS:
+   // async function login(userData){
+   //    if (userData.password === PASSWORD && userData.email === EMAIL) {
+   //       setAccess(true);
+   //       navigate('/home');
+   //    }
+   // }
+
+   // FORMA LOGIN CON EXPRESS:
+   function login(userData) {
+      const { email, password } = userData;
+      const URL = 'http://localhost:3001/rickandmorty/login/'
+      axios(URL + `?email=${email}&password=${password}`).then(({ data }) => {
+         const { access } = data;
+         setAccess(data);
+         access && navigate('/home');
+      });
    }
 
-   useEffect(() => {
-      !access && navigate('/');
-   }, [access]);
+   // Este hace validacion no permite pasar a otra pagina por la ruta en la barra
+   // useEffect(() => {
+   //    !access && navigate('/');
+   // }, [access]);
 
    async function onSearch(id) {
       try {
-         const { data } = await axios(`https://rickandmortyapi.com/api/character/${id}`)
+         console.log(1)
+         const { data } = await axios(`http://localhost:3001/rickandmorty/character/${id}`)
+         console.log(2)
 
          if (data.name) {
-            const findCharacter = characters.find((element) => element.id === parseInt(id))
+            console.log(3)
+            const findCharacter = characters.find((element) => element.id === id)
+            console.log(4, data)
             if (characters.length === 825) {
+               console.log(5)
                window.alert('¡Ya no hay mas personajes para agregar!')
             } else if (findCharacter) {
+               console.log(6)
                window.alert('¡Este personaje ya se encuentra en pantalla!')
             } else {
+               console.log(7)
                setCharacters((oldChars) => [...oldChars, data]);
             }
          }
@@ -95,7 +116,10 @@ function App() {
    }
 
    function onClose(id) {
-      const updatedCharacters = characters.filter((character) => character.id !== parseInt(id))
+      console.log(1, id)
+      const updatedCharacters = characters.filter((character) => {
+         return character.id !== id
+      })
       setCharacters(updatedCharacters)
    }
 

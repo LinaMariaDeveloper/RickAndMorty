@@ -8,25 +8,27 @@ import style from '../style.module.css'
 
 const Favorites = () => {
 
-  const favorites = useSelector(state => state.myFavorites)
+  const filtered = useSelector((state) => state.filtered)
   const dispatch = useDispatch()
   const [aux, setAux] = useState(false);
+  const [auxFiltros, setAuxFiltros] = useState(false);
 
   
   function handleOrder(event) {
-    if (aux) {
-      setAux(false);
-    } else {
-      setAux(true);
-    }
+    setAux(!aux);
     dispatch(orderCards(event.target.value));
   }
 
   function handleFilter(event) {
+    if (event.target.value !== "AllGender") {
+      setAuxFiltros(true);
+    } else {
+      setAuxFiltros(false);
+    }
     dispatch(filterFavorite(event.target.value));
   }
 
-  const favs = favorites.map((character) => <Card
+  const favs = filtered.map((character) => <Card
     key={character.id}
     id={character.id}
     name={character.name}
