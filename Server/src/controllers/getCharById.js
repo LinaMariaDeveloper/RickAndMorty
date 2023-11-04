@@ -1,26 +1,52 @@
-// SEGUNDA FORMA EXPRESS:
-
 const axios = require('axios')
 const URL = 'https://rickandmortyapi.com/api/character/'
 
-const getCharById = (req, res) => {
+async function getCharById(req, res){
+  try{
+    const { id } = req.params
+    const { data } =  await axios.get(`${URL}${id}`)
 
-  const { id } = req.params;
-
-  axios.get(`${URL}${id}`).then((response) => {
-      const { name, status, species, gender, origin, image } = response.data;
-
-      // Crear un objeto con la información del personaje
-      const character = { id, name, status, species, gender, origin, image };
-
-      return character.name
-        ? res.status(200).json(character)
-        : res.status(404).send('Not Found');
-    })
-    .catch((error) => {
-      return res.status(500).send(error.message);
-    });
+    if(data){
+      let character = {
+        id: data.id,
+        name: data.name,
+        gender: data.gender,
+        species: data.species,
+        origin: data.origin.name,
+        image: data.image,
+        status: data.status
+      }
+      res.status(200).json(character)
+    } else{
+      res.status(404).json({message: 'No hay personajes con ese ID'})
+    }
+  }
+  catch(error){
+    res.status(500).json({massage: error.massage})
+  }
 }
+
+
+
+// FORMA EXRPESS
+// const getCharById = (req, res) => {
+
+//   const { id } = req.params;
+
+//   axios.get(`${URL}${id}`).then((response) => {
+//       const { name, status, species, gender, origin, image } = response.data;
+
+//       // Crear un objeto con la información del personaje
+//       const character = { id, name, status, species, gender, origin, image };
+
+//       return character.name
+//         ? res.status(200).json(character)
+//         : res.status(404).send('Not Found');
+//     })
+//     .catch((error) => {
+//       return res.status(500).send(error.message);
+//     });
+// }
 
 
 // PRIMERA FORMA AXIOS:

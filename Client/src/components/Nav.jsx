@@ -20,7 +20,7 @@ export default function Nav(props) {
           <button>Favorites</button>
         </Link>
       </div>
-      {!["/favorites", "/about"].includes(location.pathname) &&(
+      {["/home"].includes(location.pathname) &&(
         <SearchBar onSearch={props.onSearch} randomCharacter={props.randomCharacter}/>
       )}
       <Link>

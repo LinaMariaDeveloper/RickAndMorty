@@ -53,45 +53,54 @@ function App() {
    //    }
    // }
 
-   // FORMA LOGIN CON EXPRESS:
-   function login(userData) {
-      const { email, password } = userData;
+   // FORMA LOGIN ASYNC- AWAIT:
+   async function login(userData){
       const URL = 'http://localhost:3001/rickandmorty/login/'
-      axios(URL + `?email=${email}&password=${password}`).then(({ data }) => {
-         const { access } = data;
-         setAccess(data);
+      
+      try{
+         const { email, password } = userData
+         const { data } = await axios(URL + `?email=${email}&password=${password}`)
+         
+         setAccess(data.access);
          access && navigate('/home');
-      });
+      }
+      catch(error){
+         window.alert('No existe el usuario')
+      }
    }
+
+   // FORMA LOGIN CON EXPRESS:
+   // function login(userData) {
+   //    const { email, password } = userData;
+   //    const URL = 'http://localhost:3001/rickandmorty/login/'
+   //    axios(URL + `?email=${email}&password=${password}`).then(({ data }) => {
+   //       const { access } = data;
+   //       setAccess(data);
+   //       access && navigate('/home');
+   //    });
+   // }
 
    // Este hace validacion no permite pasar a otra pagina por la ruta en la barra
    // useEffect(() => {
-   //    !access && navigate('/');
-   // }, [access]);
+   //       access ? navigate('/home')
+   //       : navigate('/')
+   // })
 
    async function onSearch(id) {
       try {
-         console.log(1)
          const { data } = await axios(`http://localhost:3001/rickandmorty/character/${id}`)
-         console.log(2)
 
          if (data.name) {
-            console.log(3)
             const findCharacter = characters.find((element) => element.id === id)
-            console.log(4, data)
             if (characters.length === 825) {
-               console.log(5)
                window.alert('¡Ya no hay mas personajes para agregar!')
             } else if (findCharacter) {
-               console.log(6)
                window.alert('¡Este personaje ya se encuentra en pantalla!')
             } else {
-               console.log(7)
                setCharacters((oldChars) => [...oldChars, data]);
             }
          }
       } catch (error) {
-         console.log(error.response)
          if (error.response && error.response.status === 404) {
             window.alert('¡No hay personajes con este ID!')
          } else {

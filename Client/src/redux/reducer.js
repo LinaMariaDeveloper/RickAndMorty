@@ -13,11 +13,13 @@ export default function rootReducer(state = initialState, action) {
     //   };
 
     case ADD_FAVORITE:
-      return {
-        ...state,
-        myFavorites: action.payload,
-        allCharacters: action.payload,
-      }
+      if(!state.myFavorites.some(card => card.id === action.payload.id)){
+        return {
+          ...state,
+          myFavorites: action.payload,
+          allCharacters: action.payload,
+        }
+      }; break;
     // FORMA ANTES DE EXPRESS
     // case REMOVE_FAVORITE:
     //   return {
@@ -29,15 +31,17 @@ export default function rootReducer(state = initialState, action) {
       return { ...state, myFavorites: action.payload }
 
     case FIlTER_FAVORITE:
-      return {
-        ...state,
-        filtered: state.myFavorites.filter(
-          (element) => element.gender === action.payload || action.payload === 'All'
-        ),
-      };
-      
+      if(!state.myFavorites.some(card => card.id === action.payload.id)){
+        return {
+          ...state,
+          filtered: state.myFavorites.filter(
+            (element) => element.gender === action.payload || action.payload === 'All'
+          )
+        }
+      }; break;
     case ORDER_CARDS:
       let favoritesOrd = [...state.filtered]
+      if(!state.myFavorites.some(card => card.id === action.payload.id)){
       return {
         ...state,
         filtered:
@@ -45,6 +49,7 @@ export default function rootReducer(state = initialState, action) {
             ? favoritesOrd.sort((a, b) => a.id - b.id)
             : favoritesOrd.sort((a, b) => b.id - a.id)
       }
+    }; break;
     default:
       return state
   }
