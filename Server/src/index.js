@@ -2,12 +2,21 @@
 
 const server = require('./server')
 const PORT = 3001;
+const { conn } = require('../src/DB_connection') // AGREGADO DB SEQUELIZE ORM
 
-server.listen(PORT, () => {
+server.listen(PORT, async() => {
+   await conn.sync({ force: true }) // AGREDADO DB SEQUELIZE
    console.log('Server raised in port: ' + PORT);
 });
 
+// Antes de que se levante el servidor, sincronizamos la db
+// alter: Actualiza la db y modifica
 
+// conn.sync({ alter: true}).then(() => {
+//    server.listen(PORT, () => {
+//       console.log('Server raised in port: 3001')
+//    })
+// })
 
 //SEGUNDA FORMA AXIOS:
 
