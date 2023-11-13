@@ -25,7 +25,7 @@ function App() {
 
    const [access, setAccess] = useState(false)
    const EMAIL = 'linamfisio@gmail.com';
-   const PASSWORD = 'lina123';
+   const PASSWORD = '1234lina';
    const navigate = useNavigate()
 
    //FORMA onSearch antes de axios:
