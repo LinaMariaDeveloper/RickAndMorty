@@ -138,9 +138,8 @@ function App() {
    }
 
    function logOut (){
-      setAccess(false)
-      navigate('/')
-      setCharacters([])
+            setAccess(false)
+            navigate('/');
    }
 
    return (
