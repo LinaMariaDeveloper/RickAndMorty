@@ -140,6 +140,7 @@ function App() {
    function logOut (){
             setAccess(false)
             navigate('/');
+            setCharacters([])
    }
 
    return (
