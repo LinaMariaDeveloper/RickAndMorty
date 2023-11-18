@@ -30,7 +30,6 @@ User.belongsToMany(Favorite, {through: 'user_favorite'})
 //un personaje puede ser el favorito de muchos usuarios
 Favorite.belongsToMany(User, {through: 'user_favorite'})
 
-
 module.exports = {
    User,
    Favorite,

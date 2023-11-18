@@ -3,7 +3,7 @@ import Cards from './components/Cards.jsx';
 import Nav from './components/Nav';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import {Route, Routes, useLocation, useNavigate} from 'react-router-dom'
+import { Route, Routes, useLocation, useNavigate } from 'react-router-dom'
 import About from './components/About';
 import Detail from './components/Detail';
 import Error from './components/Error';
@@ -13,13 +13,13 @@ import style from './style.module.css'
 
 function App() {
    const [characters, setCharacters] = useState([]);
-   const {pathname} = useLocation()
+   const { pathname } = useLocation()
    const location = useLocation()
 
    const routeName = pathname.match(/^\/\w*/)[0].replaceAll('/', '')
    let background = 'background-error'
 
-   if(['', 'home', 'detail', 'about', 'favorites'].includes(routeName)) {
+   if (['', 'home', 'detail', 'about', 'favorites'].includes(routeName)) {
       background = 'background-general'
    }
 
@@ -54,17 +54,23 @@ function App() {
    // }
 
    // FORMA LOGIN ASYNC- AWAIT:
-   async function login(userData){
+   async function login(userData) {
       const URL = 'http://localhost:3001/rickandmorty/login/'
-      
-      try{
+
+      try {
          const { email, password } = userData
          const { data } = await axios(URL + `?email=${email}&password=${password}`)
-         
-         setAccess(data.access);
-         access && navigate('/home');
+
+         const { access } = data;
+         setAccess(access);
+         if (access) {
+            navigate("/home");
+         }
+
+         // setAccess(data.access);
+         // access && navigate('/home');
       }
-      catch(error){
+      catch (error) {
          window.alert('No existe el usuario')
       }
    }
@@ -82,7 +88,7 @@ function App() {
 
    // Este hace validacion no permite pasar a otra pagina por la ruta en la barra
    // useEffect(() => {
-   //       access ? navigate('/home')
+   //    access ? navigate('/home')
    //       : navigate('/')
    // })
 
@@ -137,22 +143,27 @@ function App() {
       onSearch(random)
    }
 
-   function logOut (){
-            setAccess(false)
-            navigate('/');
-            setCharacters([])
+   function logout() {
+      window.alert('Se cerrará sesión')
+      setAccess(false)
+      navigate('/')
+      setCharacters([])
    }
+
+   useEffect(()=>{
+      !access && navigate('/')
+      },[access,navigate])
 
    return (
       <div className={['App', style[background]].join(' ')}>
-         {location.pathname !== "/" &&(
-            <Nav onSearch={onSearch} randomCharacter={randomCharacter} logOut={logOut} />)}
+         {location.pathname !== "/" && (
+            <Nav onSearch={onSearch} randomCharacter={randomCharacter} logout={logout} />)}
          <Routes>
-            <Route path="/" element={<Form login={login}/>}/>
-            <Route path='/home' element={<Cards characters={characters} onClose={onClose}/>}/>
-            <Route path='/about' element={<About/>} />
-            <Route path='/favorites' element={<Favorites/>}/>
-            <Route path='/detail/:id' element={<Detail/>} />
+            <Route path="/" element={<Form login={login} />} />
+            <Route path='/home' element={<Cards characters={characters} onClose={onClose} />} />
+            <Route path='/about' element={<About />} />
+            <Route path='/favorites' element={<Favorites />} />
+            <Route path='/detail/:id' element={<Detail />} />
             <Route path="*" element={<Error />} />
          </Routes>
       </div>

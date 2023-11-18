@@ -24,7 +24,7 @@ export default function Nav(props) {
         <SearchBar onSearch={props.onSearch} randomCharacter={props.randomCharacter}/>
       )}
       <Link>
-        <button className={style['btn-logout']} onClick={(event) => {props.logOut()}}>Log Out</button>
+        <button className={style['btn-logout']} onClick={(ev)=> props.logout()}>Log Out</button>
       </Link>
     </div>
   )
