@@ -1,38 +1,39 @@
-import style from '../style.module.css'
-import ingresar from '../assets/ingresar.gif'
 import { useState } from 'react'
-import validate from '../utils/validation';
-import { Link } from "react-router-dom";
+import validation from '../utils/validation'
+import style from '../style.module.css'
 
-export default function Form (props){
+const RegisterForm = ({register}) => {
   const [userData, setData] = useState({
-    email:"",
-    password: "",
-  });
+    email:'',
+    password: ''
+  })
 
-  const [errors, setErrors] = useState({ email: "", password: ""})
- 
-  function handleChange (event){
-    setData({
-      ...userData, [event.target.name]: event.target.value
-    })
+  const [errors, setErrors] = useState({});
 
+  const handleChange = (event) =>{
     setErrors(
-      validate({
+      validation({
         ...userData,
-        [event.target.name]: event.target.value,
+        [event.target.name]: event.target.value
       })
     )
+    
+    setData({
+      ...userData,
+      [event.target.name]: event.target.value,
+    }) 
   }
 
-  function handleSubmit(e) {
-    e.preventDefault(props.login(userData))
-  }
+  const handleSubmit = (event) => {
+    event.preventDefault();
+
+    register(userData);
+  };
 
   return (
     <div className={style['form-general']}>
           <form  className={style['form']}>
-            <img src={ingresar} alt='' width='300px'/>
+            <h2 className={style['register']}>Register</h2>
             <label htmlFor="email">Email</label>
             <input type="text" id="email" name="email" value={userData.email} onChange={handleChange}/>
             {errors.email && (
@@ -47,11 +48,10 @@ export default function Form (props){
                 <span>{errors.password}</span>
               </h5>
             )}
-            <button type="submit" onClick={handleSubmit}>Login</button>
+            <button type="submit" onClick={handleSubmit}>Send</button>
           </form>
-            <Link to='/register'>
-              <button className={style['btn-register']}>Register</button>
-            </Link>
     </div>
   )
-};
+}
+
+export default RegisterForm;

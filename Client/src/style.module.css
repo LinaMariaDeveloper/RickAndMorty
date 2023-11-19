@@ -257,6 +257,16 @@
   border: 7px solid #C6FF00;
 }
 
+.btn-register{
+  margin-top: 30px;
+  font-size: 25px;
+  background-color: #C6FF00;
+  color: black;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-bottom: 10px;
+}
+
 .audio {
   margin-top:10px;
 }

@@ -9,6 +9,7 @@ import Detail from './components/Detail';
 import Error from './components/Error';
 import Form from './components/Form'
 import Favorites from './components/Favorites'
+import Register from './components/Register.jsx'
 import style from './style.module.css'
 
 function App() {
@@ -19,7 +20,7 @@ function App() {
    const routeName = pathname.match(/^\/\w*/)[0].replaceAll('/', '')
    let background = 'background-error'
 
-   if (['', 'home', 'detail', 'about', 'favorites'].includes(routeName)) {
+   if (['', 'home', 'detail', 'about', 'favorites', 'register'].includes(routeName)) {
       background = 'background-general'
    }
 
@@ -92,6 +93,21 @@ function App() {
    //       : navigate('/')
    // })
 
+   const register = async (userData) => {
+      const { email, password } = userData;
+      const URL = "http://localhost:3001/rickandmorty/register/";
+      try {
+        const { data } = await axios.post(URL, { email, password });
+        const { access } = data;
+        setAccess(access);
+        if (access) navigate("/");
+        alert("¡Usuario creado exitosamente!");
+      } catch (error) {
+        console.error(error);
+      }
+    };
+  
+
    async function onSearch(id) {
       try {
          const { data } = await axios(`http://localhost:3001/rickandmorty/character/${id}`)
@@ -150,16 +166,13 @@ function App() {
       setCharacters([])
    }
 
-   useEffect(()=>{
-      !access && navigate('/')
-      },[access,navigate])
-
    return (
       <div className={['App', style[background]].join(' ')}>
          {location.pathname !== "/" && (
-            <Nav onSearch={onSearch} randomCharacter={randomCharacter} logout={logout} />)}
+            <Nav onSearch={onSearch} randomCharacter={randomCharacter} logout={logout}/>)}
          <Routes>
             <Route path="/" element={<Form login={login} />} />
+            <Route path="/register" element={<Register register={register}/>} />
             <Route path='/home' element={<Cards characters={characters} onClose={onClose} />} />
             <Route path='/about' element={<About />} />
             <Route path='/favorites' element={<Favorites />} />

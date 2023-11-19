@@ -22,7 +22,7 @@ UserModel(sequelize)
 
 // Ejercicio 06
 // ¡Relaciona tus modelos aquí abajo!
-const { User, Favorite } = sequelize.models;
+const { User, Favorite, Register } = sequelize.models;
 
 //un usuario puede tener muchos favoritos
 User.belongsToMany(Favorite, {through: 'user_favorite'})
